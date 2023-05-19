@@ -20,7 +20,7 @@ variables:
   environmentName: 'web-app-free'
 
   # Project root folder. Point to the folder containing manage.py file.
-  projectRoot: $(System.DefaultWorkingDirectory)
+  projectRoot: $(System.DefaultWorkingDirectory)/TestFlaskWebProject
 
   # Python version: 3.11
   pythonVersion: '3.11'

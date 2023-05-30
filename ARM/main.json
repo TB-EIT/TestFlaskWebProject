@@ -54,9 +54,9 @@
         }
     ],
     "outputs": {
-        "app_name": {
+        "full_app_name": {
             "type": "string",
-            "value": "[parameters('app_name')]"
+            "value": "[reference('web-app-deployment').outputs.full_app_name.value]"
         }
     }
 }

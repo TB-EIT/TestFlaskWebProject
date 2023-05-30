@@ -53,12 +53,12 @@ stages:
         rootFolderOrFile: '$(projectRoot)/TestFlaskWebProject'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/src/app-$(Build.BuildId).zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/app-$(Build.BuildId).zip
         replaceExistingArchive: true
 
-    - upload: $(Build.ArtifactStagingDirectory)/src/app-$(Build.BuildId).zip
+    - upload: $(Build.ArtifactStagingDirectory)/app-$(Build.BuildId).zip
       displayName: 'Upload Source Package'
-      artifact: drop
+      artifact: source_files
     
     - task: ArchiveFiles@2
       displayName: 'Archive ARM Templates'
@@ -66,9 +66,9 @@ stages:
         rootFolderOrFile: '$(projectRoot)/ARM'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/arm/arm-$(Build.BuildId).zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/arm-$(Build.BuildId).zip
         replaceExistingArchive: true
 
-    - upload: $(Build.ArtifactStagingDirectory)/arm/arm-$(Build.BuildId).zip
+    - upload: $(Build.ArtifactStagingDirectory)/arm-$(Build.BuildId).zip
       displayName: 'Upload ARM Templates Package'
-      artifact: drop
+      artifact: arm_templates

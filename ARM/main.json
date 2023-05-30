@@ -53,5 +53,10 @@
             "dependsOn": ["service-plan-deployment"]
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "app_name": {
+            "type": "string",
+            "value": "[parameters('app_name')]"
+        }
+    }
 }

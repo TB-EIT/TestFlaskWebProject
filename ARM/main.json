@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "app_name": {
+            "type": "string",
+            "metadata": {
+                "description": "Application name."
+            }
+        },
+        "stage": {
+            "type": "string",
+            "allowedValues" : ["dev", "test", "qa", "staging", "prod"],
+            "metadata": {
+                "description": "Deployment stage."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "service-plan-deployment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/TB-EIT/TestFlaskWebProject/master/ARM/app_service_plan.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "app_name": {"value": "[parameters('app_name')]"},
+                    "stage": {"value": "[parameters('stage')]"}
+                }
+            }
+        },
+        {
+            "name": "web-app-deployment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri" : "https://raw.githubusercontent.com/TB-EIT/TestFlaskWebProject/master/ARM/web_app.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "app_name": {"value": "[parameters('app_name')]"},
+                    "stage": {"value": "[parameters('stage')]"}
+                }
+            },
+            "dependsOn": ["service-plan-deployment"]
+        }
+    ],
+    "outputs": {}
+}

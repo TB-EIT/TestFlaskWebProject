@@ -53,14 +53,15 @@ stages:
         rootFolderOrFile: '$(projectRoot)/TestFlaskWebProject'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/app-$(Build.BuildId).zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/app.zip
         replaceExistingArchive: true
 
-    - upload: $(Build.ArtifactStagingDirectory)/app-$(Build.BuildId).zip
+    - upload: $(Build.ArtifactStagingDirectory)/app.zip
       displayName: 'Upload Source Package'
       artifact: source_files
 
     - task: CopyFiles@2
+      displayName: 'Copy ARM Templates'
       inputs:
         SourceFolder: '$(projectRoot)/ARM'
         Contents: |

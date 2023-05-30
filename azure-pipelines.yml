@@ -59,16 +59,15 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/app-$(Build.BuildId).zip
       displayName: 'Upload Source Package'
       artifact: source_files
-    
-    - task: ArchiveFiles@2
-      displayName: 'Archive ARM Templates'
-      inputs:
-        rootFolderOrFile: '$(projectRoot)/ARM'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/arm-$(Build.BuildId).zip
-        replaceExistingArchive: true
 
-    - upload: $(Build.ArtifactStagingDirectory)/arm-$(Build.BuildId).zip
-      displayName: 'Upload ARM Templates Package'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(projectRoot)/ARM'
+        Contents: |
+          main.json
+          prod_params.json
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/ARM'
+
+    - upload: $(Build.ArtifactStagingDirectory)/ARM
+      displayName: 'Upload ARM Templates'
       artifact: arm_templates

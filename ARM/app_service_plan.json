@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "app_name": {
+            "type": "string",
+            "metadata": {
+                "description": "Application name."
+            }
+        },
+        "stage": {
+            "type": "string",
+            "allowedValues" : ["dev", "test", "qa", "staging", "prod"],
+            "metadata": {
+                "description": "Deployment stage."
+            }
+        }
+    },
+    "variables": {
+        "plan_name": "[format('{0}-{1}-{2}-sp', parameters('app_name'), toLower(replace(resourceGroup().location, ' ', '')), parameters('stage'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "name": "[variables('plan_name')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "Tier": "Free",
+                "Name": "F1"
+            },
+            "kind": "linux",
+            "properties": {
+                "name": "[variables('plan_name')]",
+                "workerSize": "0",
+                "workerSizeId": "0",
+                "numberOfWorkers": "1",
+                "reserved": true,
+                "zoneRedundant": false
+            }
+        }
+    ],
+    "outputs": {
+        "plan_name": {
+            "type": "string",
+            "value": "[variables('plan_name')]"
+        }
+    }
+}

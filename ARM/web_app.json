@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "app_name": {
+            "type": "string",
+            "metadata": {
+                "description": "Application name."
+            }
+        },
+        "stage": {
+            "type": "string",
+            "allowedValues" : ["dev", "test", "qa", "staging", "prod"],
+            "metadata": {
+                "description": "Deployment stage."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "plan_name": "[format('{0}-{1}-{2}-sp', parameters('app_name'), toLower(replace(resourceGroup().location, ' ', '')), parameters('stage'))]",
+        "app-name": "[format('{0}-{1}-{2}-app', parameters('app_name'), toLower(replace(resourceGroup().location, ' ', '')), parameters('stage'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('app-name')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-06-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[variables('app-name')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('plan_name'))]",
+                "siteConfig": {
+                    "linuxFxVersion": "PYTHON|3.7"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "app-name": {
+            "type": "string",
+            "value": "[variables('app-name')]"
+        }
+    }
+}
